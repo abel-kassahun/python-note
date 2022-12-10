@@ -1,0 +1,55 @@
+Decorators
+Python decorators are really cool, but they can be a little hard to understand at first. 
+A decorator in Python is a function that accepts another function as an argument. 
+The decorator will usually modify or enhance the function it accepted and return the modified function. 
+This means that when you call a decorated function, you will get a function that may be a little different that may have additional features compared with the base definition. 
+But let’s back up a bit. We should probably review the basic building block of a decorator, namely, the function.
+A Simple Function
+
+A function is a block of code that begins with the Python keyword def followed by the actual name of the function. 
+A function can accept zero or more arguments, keyword arguments or a mixture of the two.
+A function always returns something. If you do not specify what a function should return, it will return None. Here is a very simple function that just returns a string:
+def a_function():
+    """A pretty useless function"""
+    return "1+1"
+
+if __name__ == "__main__":
+    value = a_function()
+    print(value)
+All we do in the code above is call the function and print the return value. Let’s create another function:
+def another_function(func):
+    """
+    A function that accepts another function
+    """
+    def other_func():
+        val = "The result of %s is %s" % (func(),
+                                          eval(func())
+                                          )
+        return val
+    return other_func
+This function accepts one argument and that argument has to be a function or callable.
+ In fact, it really should only be called using the previously defined function. 
+You will note that this function has a nested function inside of it that we are calling other_func. 
+It will take the result of the function passed to it, evaluate it and create a string that tells us about what it did, which it then returns.
+ Let’s look at the full version of the code:
+def another_function(func):
+    """
+    A function that accepts another function
+    """
+
+    def other_func():
+        val = "The result of %s is %s" % (func(),
+                                          eval(func())
+                                          )
+        return val
+    return other_func
+
+def a_function():
+    """A pretty useless function"""
+    return "1+1"
+
+if __name__ == "__main__":
+    value = a_function()
+    print(value)
+    decorator = another_function(a_function)
+    print(decorator())
